@@ -5,11 +5,13 @@ import { useState } from 'react'
 import Layout from '../components/layout'
 import useApiData from '../hooks/use-api-data'
 import Airport from '../types/airport'
+import useDebounce from '../hooks/use-debounce'
 
 const Page: NextPage = () => {
   const [query, setQuery] = useState<string>('')
+  const debouncedQuery = useDebounce(query)
 
-  const airports = useApiData<Airport[]>(`/api/airports/${query}`, [], [query])
+  const airports = useApiData<Airport[]>(`/api/airports/${debouncedQuery}`, [], [debouncedQuery])
 
   return (
     <Layout>
