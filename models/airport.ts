@@ -12,7 +12,7 @@ export const allAirports = async (): Promise<Airport[]> => {
 export const searchAirports = async (
   query: string,
   page: number = 1,
-  limit: number = 50
+  limit?: number
 ): Promise<Airport[]> => {
   const regex = new RegExp(query, 'i')
 
@@ -23,6 +23,10 @@ export const searchAirports = async (
       regex.test(airport.city) ||
       regex.test(airport.country)
   )
+
+  if (!limit) {
+    return filteredAirports
+  }
 
   const startIndex = (page - 1) * limit
   const endIndex = startIndex + limit
