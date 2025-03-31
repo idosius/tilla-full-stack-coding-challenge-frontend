@@ -1,10 +1,11 @@
 import { NextPage } from 'next'
-import Link from 'next/link'
 import { useState } from 'react'
 
 import Layout from '../components/layout'
 import useApiData from '../hooks/use-api-data'
 import Airport from '../types/airport'
+import AirportCard from '../components/AirportCard'
+import ResultsCount from '../components/ResultsCount'
 
 const Page: NextPage = () => {
   const [query, setQuery] = useState<string>('')
@@ -13,11 +14,9 @@ const Page: NextPage = () => {
 
   return (
     <Layout>
-      <h1 className="text-2xl font-bold">Code Challenge: Airports</h1>
+      <h1 className="text-2xl mb-10 font-bold">Code Challenge: Airports</h1>
 
-      <h2 className="mt-10 text-xl font-semibold">All Airports</h2>
-
-      <div className="mt-1 relative shadow-sm">
+      <div className="relative shadow-sm">
         <input
           type="text"
           name="query"
@@ -28,18 +27,15 @@ const Page: NextPage = () => {
         />
       </div>
 
-      <div>
+      <h2 className="flex gap-2 items-center mt-10 mb-5 text-xl font-semibold">Airports
+        {airports.length > 0 && (
+          <ResultsCount count={airports.length} />
+        )}
+      </h2>
+
+      <div className="grid md:grid-cols-2 gap-4">
         {airports.map((airport) => (
-          <Link
-            className="flex items-center p-5 mt-5 text-gray-800 border border-gray-200 rounded-lg shadow-sm hover:border-blue-600 focus:border-blue-600 focus:ring focus:ring-blue-200 focus:outline-none"
-            href={`/airports/${airport.iata.toLowerCase()}`}
-            key={airport.iata}
-          >
-            <span>
-              {airport.name}, {airport.city}
-            </span>
-            <span className="ml-auto text-gray-500">{airport.country}</span>
-          </Link>
+          <AirportCard airport={airport} key={airport.iata} />
         ))}
       </div>
     </Layout>
